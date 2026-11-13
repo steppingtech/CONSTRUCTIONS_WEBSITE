@@ -1,0 +1,71 @@
+:root {
+  --bc-primary: #0d1b2a; /* Updated to match Shree Balaji Logo Navy */
+  --bc-secondary: #ffffff;
+  --bc-accent: #d4af37; /* Updated to match Shree Balaji Logo Gold */
+  --bc-bg: #f5f6f7;
+  --bc-text: #222831;
+  --bc-muted: #6b7280;
+  --bc-border: #e5e7eb;
+  --bc-radius: 14px;
+  --bc-shadow: 0 10px 30px rgba(13, 27, 42, 0.08);
+  --bc-shadow-lg: 0 24px 60px rgba(13, 27, 42, 0.14);
+  --bc-transition: 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  color: var(--bc-text);
+  background: var(--bc-secondary);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-heading {
+  font-family: "Manrope", sans-serif;
+  color: var(--bc-primary);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+h1 {
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 800;
+}
+h2 {
+  font-size: clamp(1.6rem, 4vw, 2.75rem);
+}
+h3 {
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+}
+p {
+  color: var(--bc-muted);
+}
+a {
+  color: var(--bc-primary);
+  text-decoration: none;
+  transition: color var(--bc-transition);
+}
+a:hover {
+  color: var(--bc-accent);
+}
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Alternating Section Background */
+.section-bg {
+  background-color: var(--bc-bg);
+}

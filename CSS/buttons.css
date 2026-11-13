@@ -1,0 +1,78 @@
+.btn {
+  font-family: "Manrope", sans-serif;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.8rem 1.6rem;
+  transition: all var(--bc-transition);
+  letter-spacing: 0.01em;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Shimmer Effect */
+.btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+  transition: all 0.5s ease;
+  z-index: -1;
+}
+.btn:hover::before {
+  left: 100%;
+}
+
+.btn-accent {
+  background: var(--bc-accent);
+  border: 1px solid var(--bc-accent);
+  color: #fff;
+}
+.btn-accent:hover {
+  background: #d57a28;
+  border-color: #d57a28;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(233, 139, 53, 0.35);
+}
+.btn-outline-light {
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  color: #fff;
+  background: transparent;
+}
+.btn-outline-light:hover {
+  background: #fff;
+  color: var(--bc-primary);
+  border-color: #fff;
+  transform: translateY(-2px);
+}
+.btn-dark-ghost {
+  background: transparent;
+  border: 1px solid var(--bc-primary);
+  color: var(--bc-primary);
+}
+.btn-dark-ghost:hover {
+  background: var(--bc-primary);
+  color: #fff;
+  transform: translateY(-2px);
+}
+.btn-link-arrow {
+  font-family: "Manrope";
+  font-weight: 600;
+  color: var(--bc-accent);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0;
+}
+.btn-link-arrow:hover {
+  gap: 0.7rem;
+}

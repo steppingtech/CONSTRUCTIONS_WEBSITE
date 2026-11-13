@@ -1,0 +1,98 @@
+.navbar {
+  transition: all var(--bc-transition);
+  padding: 1rem 0;
+  background: transparent;
+}
+.navbar.scrolled {
+  background: var(--bc-primary);
+  padding: 0.6rem 0;
+  box-shadow: 0 4px 20px rgba(13, 27, 42, 0.18);
+}
+.navbar-brand {
+  font-family: 'Manrope';
+  font-weight: 800;
+  color: #fff !important;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 12px; 
+  text-decoration: none;
+}
+.navbar-brand img {
+  height: 45px;
+  background: #fff;
+  border-radius: 6px;
+  padding: 3px;
+  object-fit: contain;
+}
+.navbar-brand span {
+  font-size: 1.15rem;
+  line-height: 1.1;
+  display: block;
+  white-space: nowrap; 
+}
+.navbar-brand span small {
+  font-size: 0.75rem;
+  color: var(--bc-accent);
+  letter-spacing: 1px;
+  font-weight: 600;
+  display: block;
+}
+
+.navbar .nav-link {
+  font-family: 'Manrope';
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85) !important;
+  padding: 0.5rem 1rem !important;
+  position: relative;
+}
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+  color: #fff !important;
+}
+.navbar .nav-link.active::after {
+  content: "";
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: 0.2rem;
+  height: 2px;
+  background: var(--bc-accent);
+  border-radius: 2px;
+}
+.navbar .btn-accent {
+  padding: 0.55rem 1.3rem;
+  font-size: 0.9rem;
+}
+.navbar.navbar-solid {
+  background: var(--bc-primary);
+}
+.navbar-toggler {
+  border: none;
+  box-shadow: none !important;
+  padding: 0.25rem;
+}
+.navbar-toggler-icon {
+  filter: invert(1);
+}
+
+/* MOBILE SPECIFIC NAVBAR FIXES */
+@media (max-width: 991.98px) {
+  .navbar-brand img {
+    height: 38px; 
+  }
+  .navbar-brand span {
+    font-size: 0.95rem; 
+  }
+  .navbar-brand span small {
+    font-size: 0.65rem;
+  }
+  .navbar-collapse {
+    background: var(--bc-primary);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 10px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  }
+}

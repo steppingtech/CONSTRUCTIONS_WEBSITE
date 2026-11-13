@@ -1,0 +1,202 @@
+.section {
+  padding: clamp(3.5rem, 7vw, 6.5rem) 0;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bc-accent);
+  margin-bottom: 1rem;
+}
+.section-title {
+  max-width: 720px;
+}
+.section-title.center {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.feature-item {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: var(--bc-radius);
+  border: 1px solid var(--bc-border);
+  height: 100%;
+  transition: all var(--bc-transition);
+}
+.feature-item:hover {
+  border-color: var(--bc-accent);
+  box-shadow: var(--bc-shadow);
+}
+.feature-icon {
+  flex: 0 0 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  background: rgba(212, 175, 55, 0.12);
+  color: var(--bc-accent);
+  border-radius: 10px;
+  font-size: 1.35rem;
+}
+.feature-item h6 {
+  font-family: "Manrope";
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+  color: var(--bc-primary);
+  font-size: 1rem;
+}
+.feature-item p {
+  font-size: 0.88rem;
+  margin: 0;
+}
+
+/* =========================================
+   DESKTOP PROCESS TIMELINE 
+   ========================================= */
+.process-container {
+  overflow: hidden;
+  width: 100%;
+}
+
+.process-track {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1.25rem;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.process-track::before {
+  content: "";
+  position: absolute;
+  top: 28px;
+  left: 5%;
+  right: 5%;
+  height: 2px;
+  background: var(--bc-border);
+  z-index: 0;
+}
+
+.process-step {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  flex: 1;
+}
+
+.process-num {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--bc-border);
+  color: var(--bc-accent);
+  display: grid;
+  place-items: center;
+  margin: 0 auto 0.9rem;
+  font-family: "Manrope";
+  font-weight: 800;
+  font-size: 1.1rem;
+  transition: all var(--bc-transition);
+}
+.process-step:hover .process-num {
+  background: var(--bc-accent);
+  color: #fff;
+  border-color: var(--bc-accent);
+  transform: scale(1.1);
+}
+.process-step h6 {
+  font-family: "Manrope";
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-bottom: 0.3rem;
+}
+.process-step small {
+  color: var(--bc-muted);
+  font-size: 0.8rem;
+  line-height: 1.4;
+  display: block;
+}
+
+/* CTA Band & Other Sections */
+.cta-band {
+  background: var(--bc-primary);
+  color: #fff;
+  padding: clamp(3rem, 6vw, 5rem) 0;
+  position: relative;
+  overflow: hidden;
+}
+.cta-band::after {
+  content: "";
+  position: absolute;
+  right: -80px;
+  top: -80px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.2), transparent 70%);
+}
+.cta-band h2 {
+  color: #fff;
+}
+.cta-band p {
+  color: rgba(255, 255, 255, 0.75);
+  max-width: 560px;
+}
+
+.filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+}
+.filter-pills button {
+  font-family: "Manrope";
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 0.55rem 1.2rem;
+  border-radius: 30px;
+  border: 1px solid var(--bc-border);
+  background: #fff;
+  color: var(--bc-primary);
+  transition: all var(--bc-transition);
+  cursor: pointer;
+}
+.filter-pills button:hover {
+  border-color: var(--bc-accent);
+  color: var(--bc-accent);
+}
+.filter-pills button.active {
+  background: var(--bc-primary);
+  color: #fff;
+  border-color: var(--bc-primary);
+}
+
+.spec-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+.spec-table th,
+.spec-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--bc-border);
+  text-align: left;
+  vertical-align: top;
+}
+.spec-table th {
+  font-family: "Manrope";
+  font-weight: 600;
+  color: var(--bc-primary);
+  width: 40%;
+  background: var(--bc-bg);
+}

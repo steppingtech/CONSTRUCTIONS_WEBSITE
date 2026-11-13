@@ -1,0 +1,186 @@
+/* ============================================================
+   SHREE BALAJI CONSTRUCTIONS — Responsive & Mobile Layouts
+   ============================================================ */
+
+/* --- Large Desktops & Laptops (1200px and down) --- */
+@media (max-width: 1199.98px) {
+  .hero {
+    min-height: 85vh;
+  }
+  .process-track::before {
+    display: none; /* Line hide for smaller screens */
+  }
+}
+
+/* --- Tablets (991px and down) --- */
+@media (max-width: 991.98px) {
+  .hero {
+    padding-top: 7rem;
+    padding-bottom: 4rem;
+  }
+  .navbar {
+    background: var(--bc-primary);
+    padding: 0.8rem 0;
+  }
+  .navbar .nav-link {
+    padding: 0.6rem 0 !important;
+  }
+  .navbar .nav-link.active::after {
+    display: none;
+  }
+  .navbar .btn-accent {
+    margin-top: 1rem;
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+  .page-hero {
+    padding: 8rem 0 3rem;
+  }
+  
+  /* Tablets par boxes 3-3 karke dikhenge */
+  .process-track {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .process-step {
+    flex: 0 0 calc(33.333% - 1.25rem);
+    margin-bottom: 2rem;
+  }
+}
+
+/* --- Smartphones (767px and down) --- */
+@media (max-width: 767.98px) {
+  h1 {
+    font-size: 2.2rem;
+  }
+  h2 {
+    font-size: 1.8rem;
+  }
+  .section {
+    padding: 3rem 0;
+  }
+
+  /* Fix Navbar Logo on Mobile */
+  .navbar-brand img {
+    height: 35px;
+  }
+  .navbar-brand span {
+    font-size: 0.95rem;
+  }
+
+  /* === AUTO-SCROLLING PROCESS TIMELINE (MOBILE INFINITE LOOP) === */
+  .process-container {
+    padding: 1rem 0;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+
+  .process-track {
+    display: flex;
+    flex-wrap: nowrap;
+    width: max-content;
+    animation: scroll-left 15s linear infinite; /* 15s Speed */
+    gap: 1rem;
+    justify-content: flex-start;
+  }
+
+  /* Pause if user touches */
+  .process-track:hover,
+  .process-track:active {
+    animation-play-state: paused;
+  }
+
+  .process-step {
+    flex: 0 0 160px; /* Fixed width for mobile cards */
+    background: #fff;
+    padding: 1.5rem 1rem;
+    border-radius: var(--bc-radius);
+    box-shadow: var(--bc-shadow);
+    border: 1px solid var(--bc-border);
+    margin-bottom: 0;
+  }
+
+  .process-step h6 {
+    margin-bottom: 0;
+  }
+
+  @keyframes scroll-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-50% - 0.5rem)); }
+  }
+
+  /* === X-AXIS (HORIZONTAL) SCROLLING FOR OTHER SECTIONS === */
+  .mobile-x-scroll {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    margin: 0 -1rem;
+    padding-inline: 1rem;
+  }
+  .mobile-x-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-x-scroll > [class*="col-"] {
+    flex: 0 0 85%; /* Shows a peek of the next card */
+    scroll-snap-align: center;
+    max-width: 85%;
+  }
+
+  /* Floating buttons adjustment */
+  .float-wa {
+    width: 50px;
+    height: 50px;
+    font-size: 1.4rem;
+    right: 15px;
+    bottom: 15px;
+  }
+  .back-top {
+    left: 15px;
+    bottom: 15px;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* --- Small Phones (575px and down) --- */
+@media (max-width: 575.98px) {
+  .hero-scroll {
+    display: none;
+  }
+  
+  /* Process cards slightly smaller */
+  .process-step {
+    flex: 0 0 140px;
+  }
+  
+  .card-feature .card-body {
+    padding: 1.2rem;
+  }
+
+  /* Make buttons full width on mobile */
+  .hero .btn {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 0.75rem;
+  }
+
+  /* Added missing utility classes */
+  .w-sm-auto {
+    width: auto !important;
+  }
+  .w-100 {
+    width: 100% !important;
+  }
+  .text-sm-start {
+    text-align: left !important;
+  }
+  .text-sm-end {
+    text-align: right !important;
+  }
+}

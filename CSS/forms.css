@@ -1,0 +1,40 @@
+.form-label {
+  font-family: "Manrope";
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--bc-primary);
+}
+.form-control,
+.form-select {
+  border-radius: 8px;
+  border: 1px solid var(--bc-border);
+  padding: 0.75rem 1rem;
+  transition: border-color var(--bc-transition);
+}
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--bc-accent);
+  box-shadow: 0 0 0 3px rgba(233, 139, 53, 0.15);
+}
+.form-control.is-invalid,
+.form-select.is-invalid {
+  border-color: #dc3545;
+}
+.form-text.error {
+  color: #dc3545;
+  font-size: 0.82rem;
+  margin-top: 0.25rem;
+  display: none;
+}
+.was-validated .form-text.error,
+.form-text.error.show {
+  display: block;
+}
+.form-note {
+  font-size: 0.82rem;
+  color: var(--bc-muted);
+  background: var(--bc-bg);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border-left: 3px solid var(--bc-accent);
+}

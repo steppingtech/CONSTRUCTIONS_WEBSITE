@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Dashboard | Shree Balaji Constructions</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="../CSS/style.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen" class="d-flex align-items-center justify-content-center vh-100 px-3">
+    <div class="card p-4 shadow border-0 w-100" style="max-width: 400px;">
+        <div class="text-center mb-4">
+            <h2 class="font-heading fw-bold text-dark">SHREE BALAJI<span style="color:var(--bc-accent)">.</span></h2>
+            <p class="text-muted small">Admin Portal</p>
+        </div>
+        <input type="password" id="adminPass" class="form-control mb-3" placeholder="Enter Password">
+        <button class="btn btn-accent w-100" id="loginBtn">Login</button>
+        <p class="text-danger mt-3 text-center small d-none" id="loginError">Incorrect Password</p>
+    </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="d-none">
+    <nav class="navbar navbar-dark bg-dark px-3 px-md-4 mb-4">
+        <span class="navbar-brand font-heading">SHREE BALAJI Admin</span>
+        <div class="d-flex gap-2">
+            <a href="index.html" class="btn btn-outline-light btn-sm">View Website</a>
+            <button class="btn btn-danger btn-sm" onclick="location.reload()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container pb-5">
+        <div class="row g-4">
+            
+            <!-- LEFT SIDE: ADD / EDIT PROJECT FORM -->
+            <div class="col-lg-5">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="mb-0 font-heading fw-bold" id="formTitle">Add New Project</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="projectForm">
+                            <input type="hidden" id="editSlug" name="oldSlug" value="">
+                            
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label small">Project Title *</label>
+                                    <input type="text" id="title" name="title" class="form-control" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small">URL Slug (No spaces) *</label>
+                                    <input type="text" id="slug" name="slug" class="form-control" placeholder="Auto-generated" readonly style="background-color: #e9ecef;" required>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label small">Category *</label>
+                                    <select id="category" name="category" class="form-select" required>
+                                        <option value="PWD Project">PWD Project</option>
+                                        <option value="Nagar Parishad">Nagar Parishad</option>
+                                        <option value="Irrigation Department">Irrigation Department</option>
+                                        <option value="Road Construction">Road Construction</option>
+                                        <option value="Civil Works">Civil Works</option>
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label small">Status *</label>
+                                    <select id="status" name="status" class="form-select" required>
+                                        <option value="Completed">Completed</option>
+                                        <option value="Ongoing">Ongoing</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small">Location *</label>
+                                    <input type="text" id="location" name="location" class="form-control" required>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <label class="form-label small">Cover Image (Select from Device) *</label>
+                                    <input type="file" id="coverFile" class="form-control" accept="image/*">
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label small">Project Description *</label>
+                                    <textarea id="description" name="description" class="form-control" rows="3" required></textarea>
+                                </div>
+                                
+                                <div class="col-12 mt-4">
+                                    <button type="submit" class="btn btn-accent w-100" id="submitBtn">Save Project</button>
+                                    <button type="button" class="btn btn-secondary w-100 mt-2 d-none" id="cancelEditBtn">Cancel Edit</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div id="projectStatus" class="mt-3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE: LIST -->
+            <div class="col-lg-7">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="mb-0 font-heading fw-bold">Manage Projects</h5>
+                    </div>
+                    <div class="card-body table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="projectsTableBody">
+                                <tr><td colspan="3" class="text-center">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script type="module">
+  import { fetchProjects, sendToSheet } from '../JS/google-sheet-api.js';
+
+  // === YAHAN APNA CLOUDINARY CLOUD NAME DAALEIN ===
+  const CLOUDINARY_CLOUD_NAME = "p8qfrwwr"; // <-- Apna Cloud Name yahan likhein
+  const CLOUDINARY_UPLOAD_PRESET = "shree_balaji_preset"; // Jo preset aapne banaya
+
+  const ADMIN_PASSWORD = "admin123"; // Apna password yahan badlein
+  let allProjects = [];
+
+  // 1. LOGIN
+  document.getElementById("loginBtn").addEventListener("click", () => {
+      const pass = document.getElementById("adminPass").value;
+      if (pass === ADMIN_PASSWORD) {
+          document.getElementById("loginScreen").classList.add("d-none");
+          document.getElementById("dashboard").classList.remove("d-none");
+          loadProjectsTable();
+      } else {
+          document.getElementById("loginError").classList.remove("d-none");
+      }
+  });
+
+  // 2. AUTO GENERATE SLUG
+  document.getElementById("title").addEventListener("input", function() {
+      const slug = this.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+      document.getElementById("slug").value = slug;
+  });
+
+  // 3. LOAD PROJECTS
+  async function loadProjectsTable() {
+      const tbody = document.getElementById("projectsTableBody");
+      tbody.innerHTML = `<tr><td colspan="3" class="text-center">Fetching...</td></tr>`;
+      
+      try {
+          allProjects = await fetchProjects();
+          if (allProjects.length === 0) {
+              tbody.innerHTML = `<tr><td colspan="3" class="text-center">No projects found.</td></tr>`;
+              return;
+          }
+          tbody.innerHTML = allProjects.map(p => `
+              <tr>
+                  <td><strong>${p.Title}</strong><br><small class="text-muted">${p.Slug}</small></td>
+                  <td><span class="badge bg-secondary">${p.Category}</span></td>
+                  <td>
+                      <button class="btn btn-sm btn-primary me-1" onclick="editProject('${p.Slug}')"><i class="bi bi-pencil"></i></button>
+                      <button class="btn btn-sm btn-danger" onclick="deleteProject('${p.Slug}')"><i class="bi bi-trash"></i></button>
+                  </td>
+              </tr>
+          `).join("");
+      } catch (error) {
+          tbody.innerHTML = `<tr><td colspan="3" class="text-center text-danger">Error connecting.</td></tr>`;
+      }
+  }
+
+  // 4. FORM SUBMIT (Cloudinary Upload)
+  document.getElementById("projectForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    
+    const btn = document.getElementById("submitBtn");
+    const status = document.getElementById("projectStatus");
+    const isEdit = document.getElementById("editSlug").value !== "";
+    
+    const title = document.getElementById("title").value;
+    const slug = document.getElementById("slug").value;
+    const location = document.getElementById("location").value;
+    const fileInput = document.getElementById('coverFile');
+    const file = fileInput.files[0];
+
+    if (!title || !slug || !location) {
+        status.innerHTML = `<div class="alert alert-danger py-2">Please fill all text fields.</div>`;
+        return;
+    }
+    
+    if (!isEdit && !file) {
+        status.innerHTML = `<div class="alert alert-danger py-2">Please select a Cover Image.</div>`;
+        return;
+    }
+
+    btn.innerText = "Processing...";
+    btn.disabled = true;
+    status.innerHTML = "";
+
+    let finalImageUrl = "KEEP_OLD"; 
+
+    // Agar nayi image select ki hai, toh Cloudinary par upload karein
+    if (file) {
+        btn.innerText = "Uploading Image to Cloudinary...";
+        
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+        try {
+            const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+                method: "POST",
+                body: formData
+            });
+            const data = await response.json();
+            
+            if(data.secure_url) {
+                finalImageUrl = data.secure_url; 
+            } else {
+                throw new Error("Upload failed");
+            }
+        } catch (error) {
+            status.innerHTML = `<div class="alert alert-danger py-2">Image upload failed. Check Cloudinary settings.</div>`;
+            btn.innerText = "Save Project";
+            btn.disabled = false;
+            return;
+        }
+    }
+
+    btn.innerText = "Saving to Sheet...";
+
+    const sheetData = new FormData();
+    sheetData.append("action", isEdit ? "updateProject" : "addProject");
+    sheetData.append("title", title);
+    sheetData.append("slug", slug);
+    sheetData.append("oldSlug", document.getElementById("editSlug").value);
+    sheetData.append("category", document.getElementById("category").value);
+    sheetData.append("status", document.getElementById("status").value);
+    sheetData.append("location", location);
+    sheetData.append("description", document.getElementById("description").value);
+    sheetData.append("cover", finalImageUrl); 
+
+    const res = await sendToSheet(sheetData);
+    
+    if(res.success) {
+        status.innerHTML = `<div class="alert alert-success py-2">Project saved successfully!</div>`;
+        resetForm();
+        setTimeout(loadProjectsTable, 2000);
+    } else {
+        status.innerHTML = `<div class="alert alert-danger py-2">Failed to save to Google Sheet.</div>`;
+    }
+    
+    btn.innerText = "Save Project";
+    btn.disabled = false;
+  });
+
+  // 5. EDIT PROJECT
+  window.editProject = function(slug) {
+      const project = allProjects.find(p => p.Slug === slug);
+      if (!project) return;
+
+      document.getElementById("formTitle").innerText = "Edit Project";
+      document.getElementById("editSlug").value = project.Slug;
+      document.getElementById("title").value = project.Title;
+      document.getElementById("slug").value = project.Slug;
+      document.getElementById("category").value = project.Category;
+      document.getElementById("status").value = project.Status;
+      document.getElementById("location").value = project.Location;
+      document.getElementById("description").value = project.Description;
+      
+      document.getElementById("coverFile").value = "";
+      document.getElementById("cancelEditBtn").classList.remove("d-none");
+      window.scrollTo(0, 0);
+  };
+
+  // 6. CANCEL EDIT
+  document.getElementById("cancelEditBtn").addEventListener("click", resetForm);
+
+  function resetForm() {
+      document.getElementById("projectForm").reset();
+      document.getElementById("editSlug").value = "";
+      document.getElementById("formTitle").innerText = "Add New Project";
+      document.getElementById("cancelEditBtn").classList.add("d-none");
+  }
+
+  // 7. DELETE PROJECT
+  window.deleteProject = async function(slug) {
+      if (!confirm("Are you sure you want to delete this project?")) return;
+
+      const sheetData = new FormData();
+      sheetData.append("action", "deleteProject");
+      sheetData.append("slug", slug);
+
+      const res = await sendToSheet(sheetData); 
+      
+      if (res.success) {
+          alert("Project deleted! Updating table...");
+          setTimeout(loadProjectsTable, 2000); 
+      } else {
+          alert("Error deleting project.");
+      }
+  };
+</script>
+</body>
+</html>

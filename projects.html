@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Our Projects | Shree Balaji Constructions</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="../CSS/style.css" rel="stylesheet">
+</head>
+<body data-page="projects">
+
+<div id="navbar-slot"></div>
+
+<section class="page-hero">
+  <div class="container">
+    <nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="index.html">Home</a></li><li class="breadcrumb-item active">Projects</li></ol></nav>
+    <h1 class="mt-3">Our Projects</h1>
+    <p class="text-white-50 mt-3">Government infrastructure, road construction, and civil engineering works.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    
+    <!-- UPDATED: Filter pills for Shree Balaji Categories -->
+    <div class="filter-pills" role="group" aria-label="Project filters" style="overflow-x:auto; flex-wrap:nowrap; justify-content:flex-start; padding-bottom:10px;">
+      <button class="active" data-filter="all" style="white-space:nowrap;">All Projects</button>
+      <button data-filter="PWD Project" style="white-space:nowrap;">PWD Projects</button>
+      <button data-filter="Nagar Parishad" style="white-space:nowrap;">Nagar Parishad</button>
+      <button data-filter="Irrigation Department" style="white-space:nowrap;">Irrigation</button>
+      <button data-filter="Road Construction" style="white-space:nowrap;">Road Construction</button>
+      <button data-filter="Civil Works" style="white-space:nowrap;">Civil Works</button>
+    </div>
+    
+    <!-- Project Grid -->
+    <div class="row g-4 mobile-x-scroll" id="projectGrid"></div>
+    
+    <!-- Empty State -->
+    <div class="text-center mt-4 d-none" id="noResults"><p class="text-muted">No projects match this filter yet.</p></div>
+  </div>
+</section>
+
+<div id="footer-slot"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../JS/main.js"></script>
+<script type="module">
+  import { fetchProjects } from '../JS/google-sheet-api.js';
+  
+  document.addEventListener("DOMContentLoaded", async () => {
+    const grid = document.getElementById("projectGrid");
+    if (!grid) return;
+
+    // Fetch projects from Google Sheet
+    const projects = await fetchProjects();
+    const empty = document.getElementById("noResults");
+    let currentFilter = "all";
+
+    function render() {
+        // Filter logic
+        const list = projects.filter(p => {
+            if (currentFilter === "all") return true;
+            return p.Category === currentFilter;
+        });
+
+        // Render HTML
+        grid.innerHTML = list.map(p => `
+            <div class="col-md-6 col-lg-4 project-item" data-reveal>
+                <a class="project-card" href="project-details.html?project=${encodeURIComponent(p.Slug)}">
+                    <img src="${p.Cover}" alt="${p.Title}" loading="lazy">
+                    <span class="badge-status ${p.Status==='Completed'?'badge-completed':'badge-ongoing'}">${p.Status}</span>
+                    <div class="overlay">
+                        <h5>${p.Title}</h5>
+                        <div class="meta"><span>${p.Category}</span><span>${p.Location}</span></div>
+                    </div>
+                </a>
+            </div>`).join("");
+        
+        // Show/hide empty message
+        empty.classList.toggle("d-none", list.length > 0);
+        
+        // Trigger animation
+        if (window.revealDynamicElements) {
+            window.revealDynamicElements();
+        }
+    }
+
+    // Add click events to filter buttons
+    document.querySelectorAll(".filter-pills button").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".filter-pills button").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            currentFilter = btn.dataset.filter;
+            render();
+        });
+    });
+
+    // Initial render
+    render();
+  });
+</script>
+</body>
+</html>
